@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'MAVEN9'
+        maven 'MAVEN3.9'
     }
 
     parameters {
