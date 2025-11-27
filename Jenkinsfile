@@ -17,7 +17,7 @@ pipeline {
             steps {
                 echo "git branch: ${params.GIT_BRANCH}"
                 git branch: params.GIT_BRANCH,
-                    url: 'https://github.com/dimmavr/myapp-ci-pipeline.git'
+                    url: 'https://github.com/hkhcoder/vprofile-project.git'
             }
         }
 
