@@ -62,5 +62,35 @@ pipeline {
                 archiveArtifacts artifacts: 'target/myapp-*.war', fingerprint: true
             }
         }
+
+        stage('publish-to-artifacts-dir'){
+            steps{
+                sh"""
+                echo "the APP_VERSION is : ${params.APP_VERSION} "
+                echo "the BUILD_NUMBER is : ${BUILD_NUMBER} "
+
+                directory="/opt/artifacts/myapp"
+
+                mkdir -p ${directory}
+
+                source_version="target/myapp-${params.APP_VERSION}.war"
+
+                if [ ! -f "${source_version}" ];then
+                exit 1
+
+                else
+                filename="myapp-${params.APP_VERSION}-build${BUILD_NUMBER}.war"
+                destination=""$directory/$filename""
+            
+                cp "${source_version}" "${destination}"
+
+             
+                fi 
+
+                """
+            }
+        }
+
+
     }
 }
