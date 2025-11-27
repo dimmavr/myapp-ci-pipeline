@@ -71,7 +71,7 @@ pipeline {
 
                 directory="/opt/artifacts/myapp"
 
-                mkdir -p ${directory}
+                mkdir -p "directory"
 
                 source_version="target/myapp-${params.APP_VERSION}.war"
 
