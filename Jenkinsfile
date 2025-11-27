@@ -63,33 +63,32 @@ pipeline {
             }
         }
 
-        stage('publish-to-artifacts-dir'){
-            steps{
-                sh"""
-                echo "the APP_VERSION is : ${params.APP_VERSION} "
-                echo "the BUILD_NUMBER is : ${BUILD_NUMBER} "
+       stage('publish-to-artifacts-dir') {
+           steps {
+             sh '''
+             echo "the APP_VERSION is : $APP_VERSION"
+             echo "the BUILD_NUMBER is : $BUILD_NUMBER"
 
-                directory="/opt/artifacts/myapp"
+            directory="/opt/artifacts/myapp"
+            mkdir -p "$directory"
 
-                mkdir -p "directory"
+         # περιμένουμε ότι υπάρχει αυτό από το προηγούμενο stage
+           source_version="target/myapp-$APP_VERSION.war"
 
-                source_version="target/myapp-${params.APP_VERSION}.war"
+           if [ ! -f "$source_version" ]; then
+            echo "ERROR: source artifact not found: $source_version"
+            exit 1
+           fi
 
-                if [ ! -f "${source_version}" ];then
-                exit 1
+          filename="myapp-$APP_VERSION-build$BUILD_NUMBER.war"
+          destination="$directory/$filename"
 
-                else
-                filename="myapp-${params.APP_VERSION}-build${BUILD_NUMBER}.war"
-                destination=""$directory/$filename""
-            
-                cp "${source_version}" "${destination}"
+          cp "$source_version" "$destination"
 
-             
-                fi 
-
-                """
-            }
-        }
+         echo "Published artifact to: $destination"
+         '''
+    }
+}
 
 
     }
