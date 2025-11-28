@@ -87,9 +87,29 @@ pipeline {
 
          echo "Published artifact to: $destination"
          '''
+        }
     }
-}
+
+    stage('trigger'){
+        steps{
+            script{
+                built job:'myapp-deploy-dev'  
+                 parameters:[(name: 'APP_VERSION', value: "${params.APP_VERSION}"),
+                 booleanParam(name: 'KEEP_BACKUPS', value: true)
+                 ] ,
+                 wait:false
+                 
+            }
+        }
+    }
 
 
     }
 }
+/* Καλεί το job myapp-deploy-dev
+
+Του περνάει την ίδια APP_VERSION που έδωσες στο myapp-ci
+
+Ορίζει KEEP_BACKUPS = true
+
+wait: false → το myapp-ci δεν περιμένει να τελειώσει το deploy (το ξεκινά και κλείνει).*/
