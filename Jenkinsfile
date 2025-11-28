@@ -90,18 +90,18 @@ pipeline {
         }
     }
 
-    stage('trigger'){
-        steps{
-            script{
-                built job:'myapp-deploy-dev'  
-                 parameters:[(name: 'APP_VERSION', value: "${params.APP_VERSION}"),
-                 booleanParam(name: 'KEEP_BACKUPS', value: true)
-                 ] ,
-                 wait:false
-                 
-            }
+   stage('trigger-dev-deploy') {
+    steps {
+        script {
+            build job: 'myapp-deploy-dev',
+                parameters: [
+                    string(name: 'APP_VERSION', value: "${params.APP_VERSION}"),
+                    booleanParam(name: 'KEEP_BACKUPS', value: true)
+                ],
+                wait: false
         }
     }
+}
 
 
     }
